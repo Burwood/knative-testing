@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tester1-1a
+  namespace: test
+spec:
+  template:
+    spec:
+      containers:
+      - name: tester
+        image: us-central1-docker.pkg.dev/usdf-sandbox/knative-test/tester:v9
+        command: ["python",  "main.py"]
+        env:
+        - name: KNATIVE_SERVICE_URL
+          value: "http://test.test.svc.cluster.local"
+        - name: REQUEST_NUMBER
+          value: "200"
+      restartPolicy: Never
+  backoffLimit: 4
