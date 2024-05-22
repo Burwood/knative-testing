@@ -1,0 +1,12 @@
+apiVersion: skaffold/v4beta10
+kind: Config
+metadata:
+  name: helloworld-python
+build:
+  artifacts:
+  - image: us-central1-docker.pkg.dev/usdf-sandbox/knative-test/flask-test
+    docker:
+      dockerfile: Dockerfile
+manifests:
+  rawYaml:
+    - service.yaml

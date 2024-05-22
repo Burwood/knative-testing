@@ -1,0 +1,43 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: test
+  namespace: test
+spec:
+  template:
+    metadata:
+      annotations:
+        #autoscaling.knative.dev/class: hpa.autoscaling.knative.dev
+        autoscaling.knative.dev/class: kpa.autoscaling.knative.dev
+        autoscaling.knative.dev/max-scale: '300'
+        #autoscaling.knative.dev/min-scale: '3'
+        autoscaling.knative.dev/enable-scale-to-zero: 'true'
+        autoscaling.knative.dev/target-burst-capacity: '-1'
+        #autoscaling.knative.dev/scale-down-delay: "15m"
+        #autoscaling.knative.dev/window: "600s"
+        autoscaling.knative.dev/scale-to-zero-grace-period: "180s"
+        #autoscaling.knative.dev/scale-to-zero-pod-retention-period: "1800s"
+        #autoscaling.knative.dev/target-utilization-percentage: '60'
+    spec:
+      containerConcurrency: 3
+      #imagePullSecrets:
+      #- name: regcred
+      timeoutSeconds: 900
+      responseStartTimeoutSeconds: 900
+      idleTimeoutSeconds: 900
+      enableServiceLinks: true
+      containers:
+      - image: us-central1-docker.pkg.dev/usdf-sandbox/knative-test/flask-test:v6
+        env:
+        - name: TARGET
+          value: "Python Sample v1"
+        - name: SLEEP_TIME
+          value: "500"
+        - name: MY_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: MY_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
