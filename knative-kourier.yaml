@@ -17,8 +17,8 @@ spec:
       enabled: true
   config:
     defaults:
-      revision-timeout-seconds: "300"
-      max-revision-timeout-seconds: "300"
+      revision-timeout-seconds: "900"
+      max-revision-timeout-seconds: "900"
     features:
       kubernetes.podspec-fieldref: "enabled"
     network:
